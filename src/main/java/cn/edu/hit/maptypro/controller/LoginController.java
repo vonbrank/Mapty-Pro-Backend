@@ -24,13 +24,51 @@ public class LoginController {
     @ResponseBody
     public Response login(@RequestBody User requestUser) {
         String username = requestUser.getUsername();
-        username = HtmlUtils.htmlEscape(username);
+        if (username != null) username = HtmlUtils.htmlEscape(username);
+        String email = requestUser.getEmail();
+        if (email != null) email = HtmlUtils.htmlEscape(email);
 
-        User user = userService.get(username, requestUser.getPassword());
+        User user = null;
+        User userByUsername = null;
+        User userByEmail = null;
+        if (username != null && !username.isEmpty())
+            userByUsername = userService.getByName(username, requestUser.getPassword());
+        if (email != null && !email.isEmpty()) userByEmail = userService.getByEmail(email, requestUser.getPassword());
+        user = userByUsername;
+        if (user == null) user = userByEmail;
+
         if (user == null) {
             return ResponseFactory.buildResult(ResponseCode.FAIL, "User does not exist.", null);
         } else {
             return ResponseFactory.buildResult(ResponseCode.SUCCESS, "Login successfully.", user);
+        }
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "api/register")
+    @ResponseBody
+    public Response register(@RequestBody User requestUser) {
+        String username = requestUser.getUsername();
+        if (username != null) username = HtmlUtils.htmlEscape(username);
+        String email = requestUser.getEmail();
+        if (email != null) email = HtmlUtils.htmlEscape(email);
+
+        User user = null;
+        User userByUsername = null;
+        User userByEmail = null;
+        if (username != null && !username.isEmpty()) userByUsername = userService.getByName(username);
+        if (email != null && !email.isEmpty()) userByEmail = userService.getByEmail(email);
+        if (userByUsername != null || userByEmail != null) {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "User has existed.", null);
+        }
+
+        String password = requestUser.getPassword();
+        if (username != null && email != null && password != null) {
+            User newUser = new User(username, email, password);
+            userService.add(newUser);
+            return ResponseFactory.buildResult(ResponseCode.SUCCESS, "Register successfully.", newUser);
+        } else {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "Input required.", null);
         }
     }
 }
