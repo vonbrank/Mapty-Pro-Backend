@@ -38,6 +38,10 @@ public class JourneyService {
         }).forEach(journeyVOs::add);
         return journeyVOs;
     }
+
+    public Journey add(Journey journey) {
+        return journeyDAO.saveAndFlush(journey);
+    }
 }
 
 

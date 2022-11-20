@@ -17,6 +17,7 @@ public class UserService {
     }
 
     public User getByName(String username) {
+        if (username == null || username.isEmpty()) return null;
         return userDAO.findByUsername(username);
     }
 
@@ -88,7 +89,7 @@ public class UserService {
                 (user.getPassword() != null && !user.getPassword().isEmpty());
     }
 
-    public void add(User user) {
-        userDAO.saveAndFlush(user);
+    public User add(User user) {
+        return userDAO.saveAndFlush(user);
     }
 }

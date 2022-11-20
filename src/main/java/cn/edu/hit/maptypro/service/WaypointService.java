@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-class WaypointService {
+public class WaypointService {
     @Autowired
     WaypointDAO waypointDAO;
 
@@ -19,5 +19,10 @@ class WaypointService {
             return new ArrayList<>();
         }
         return waypointDAO.findAllByJourney(journey);
+    }
+
+    public void addWaypoints(List<Waypoint> waypoints) {
+        waypointDAO.saveAll(waypoints);
+        waypointDAO.flush();
     }
 }
