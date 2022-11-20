@@ -1,20 +1,17 @@
 package cn.edu.hit.maptypro.controller;
 
-import cn.edu.hit.maptypro.pojo.User;
+import cn.edu.hit.maptypro.entity.domain.User;
 import cn.edu.hit.maptypro.response.Response;
 import cn.edu.hit.maptypro.response.ResponseCode;
 import cn.edu.hit.maptypro.response.ResponseFactory;
 import cn.edu.hit.maptypro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 @Controller
-public class LoginController {
+public class UserController {
 
     @Autowired
     UserService userService;

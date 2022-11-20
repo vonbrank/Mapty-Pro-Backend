@@ -1,7 +1,7 @@
 package cn.edu.hit.maptypro.service;
 
 import cn.edu.hit.maptypro.dao.UserDAO;
-import cn.edu.hit.maptypro.pojo.User;
+import cn.edu.hit.maptypro.entity.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
