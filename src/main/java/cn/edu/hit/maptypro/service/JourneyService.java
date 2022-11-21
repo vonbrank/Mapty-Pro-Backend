@@ -2,6 +2,7 @@ package cn.edu.hit.maptypro.service;
 
 import cn.edu.hit.maptypro.dao.JourneyDAO;
 import cn.edu.hit.maptypro.entity.domain.Journey;
+import cn.edu.hit.maptypro.entity.dto.JourneyDTO;
 import cn.edu.hit.maptypro.entity.vo.JourneyVO;
 import cn.edu.hit.maptypro.entity.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,17 @@ public class JourneyService {
 
     public Journey add(Journey journey) {
         return journeyDAO.saveAndFlush(journey);
+    }
+
+    public boolean checkUserJourneyExist(User user, JourneyDTO journey) {
+        return !journeyDAO.findAllByUserAndTitle(user, journey.getTitle()).isEmpty();
+    }
+
+    public boolean checkNewJourneyValidation(JourneyDTO journeyDTO) {
+        if (journeyDTO == null) return false;
+        return (journeyDTO.getTitle() != null && !journeyDTO.getTitle().isEmpty()) &&
+                journeyDTO.getDescription() != null &&
+                (journeyDTO.getWaypoints() != null && journeyDTO.getWaypoints().size() >= 2);
     }
 }
 

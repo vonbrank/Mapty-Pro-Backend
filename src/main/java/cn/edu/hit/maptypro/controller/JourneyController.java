@@ -35,7 +35,8 @@ public class JourneyController {
     @ResponseBody
     public Response getJourneyByUser(@RequestHeader Map<String, String> headers) {
         String username = headers.get("username");
-        User user = userService.getByName(username);
+        String password = headers.get("password");
+        User user = userService.getByName(username, password);
 
         if (user == null) {
             return ResponseFactory.buildResult(ResponseCode.FAIL, "Authorization failed.", null);
@@ -50,10 +51,19 @@ public class JourneyController {
     @ResponseBody
     public Response createUserJourney(@RequestHeader Map<String, String> headers, @RequestBody JourneyDTO journeyDTO) {
         String username = headers.get("username");
-        User user = userService.getByName(username);
+        String password = headers.get("password");
+        User user = userService.getByName(username, password);
 
         if (user == null) {
             return ResponseFactory.buildResult(ResponseCode.FAIL, "Authorization failed.", null);
+        }
+
+        if (!journeyService.checkNewJourneyValidation(journeyDTO)) {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "Input value is illegal.", null);
+        }
+
+        if (journeyService.checkUserJourneyExist(user, journeyDTO)) {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "User journey has been existed.", null);
         }
 
         Journey journeyToAdd = new Journey();
