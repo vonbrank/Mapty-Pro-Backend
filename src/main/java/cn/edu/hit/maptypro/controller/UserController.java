@@ -1,6 +1,8 @@
 package cn.edu.hit.maptypro.controller;
 
 import cn.edu.hit.maptypro.entity.domain.User;
+import cn.edu.hit.maptypro.entity.dto.ResetPasswordDTO;
+import cn.edu.hit.maptypro.entity.dto.UpdateUserProfileDTO;
 import cn.edu.hit.maptypro.response.Response;
 import cn.edu.hit.maptypro.response.ResponseCode;
 import cn.edu.hit.maptypro.response.ResponseFactory;
@@ -8,6 +10,8 @@ import cn.edu.hit.maptypro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -55,4 +59,30 @@ public class UserController {
         return ResponseFactory.buildResult(ResponseCode.SUCCESS, "Register successfully.", newUser);
 
     }
+
+    @CrossOrigin
+    @PostMapping(value = "api/auth/updateUserProfile")
+    @ResponseBody
+    public Response updateUserProfile(@RequestHeader Map<String, String> headers, @RequestBody UpdateUserProfileDTO updateUserProfileDTO) {
+
+        // TODO:
+        //  update user profile feature
+
+        return ResponseFactory.buildResult(ResponseCode.INTERNAL_SERVER_ERROR, "Not Implemented.", null);
+
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "api/auth/resetPassword")
+    @ResponseBody
+    public Response resetPassword(@RequestHeader Map<String, String> headers, @RequestBody ResetPasswordDTO resetPasswordDTO) {
+
+        // TODO:
+        //  reset password feature
+
+        return ResponseFactory.buildResult(ResponseCode.INTERNAL_SERVER_ERROR, "Not Implemented.", null);
+
+    }
+
+
 }
