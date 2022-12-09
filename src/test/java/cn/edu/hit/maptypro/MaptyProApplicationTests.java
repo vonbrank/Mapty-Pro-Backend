@@ -4,10 +4,10 @@ import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MaptyProApplicationTests {
+public class MaptyProApplicationTests {
 
 	@Test
-	void contextLoads() {
+	public void contextLoads() {
 
 	}
 

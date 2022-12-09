@@ -5,7 +5,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Mapty Pro</name>
 	<description>Mapty Pro - Your Mind Milestone</description>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>

@@ -2,7 +2,7 @@ package cn.edu.hit.maptypro.controller;
 
 import cn.edu.hit.maptypro.entity.domain.Journey;
 import cn.edu.hit.maptypro.entity.domain.Waypoint;
-import cn.edu.hit.maptypro.entity.dto.JourneyDTO;
+import cn.edu.hit.maptypro.entity.dto.journey.JourneyDTO;
 import cn.edu.hit.maptypro.entity.vo.JourneyVO;
 import cn.edu.hit.maptypro.entity.domain.User;
 import cn.edu.hit.maptypro.response.Response;
@@ -35,7 +35,8 @@ public class JourneyController {
     @ResponseBody
     public Response getJourneyByUser(@RequestHeader Map<String, String> headers) {
         String username = headers.get("username");
-        User user = userService.getByName(username);
+        String password = headers.get("password");
+        User user = userService.getByName(username, password);
 
         if (user == null) {
             return ResponseFactory.buildResult(ResponseCode.FAIL, "Authorization failed.", null);
@@ -46,14 +47,37 @@ public class JourneyController {
         return ResponseFactory.buildResult(ResponseCode.SUCCESS, "OK", journeyWithWaypoints);
     }
 
+    @GetMapping(value = "api/journey/getBySeed")
+    @ResponseBody
+    public Response getJourneyBySeed(@RequestParam Integer seed, @RequestParam Integer count) {
+
+        if (seed == null || count == null) {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "Failed to get journeys due to parameter error, " +
+                    "please contact the developer", null);
+        }
+
+        List<JourneyVO> journeyWithWaypoints = journeyService.getAllJourneyWithWaypointByUserBySeed(seed, count);
+
+        return ResponseFactory.buildResult(ResponseCode.SUCCESS, "OK", journeyWithWaypoints);
+    }
+
     @PostMapping(value = "api/journey/create")
     @ResponseBody
     public Response createUserJourney(@RequestHeader Map<String, String> headers, @RequestBody JourneyDTO journeyDTO) {
         String username = headers.get("username");
-        User user = userService.getByName(username);
+        String password = headers.get("password");
+        User user = userService.getByName(username, password);
 
         if (user == null) {
             return ResponseFactory.buildResult(ResponseCode.FAIL, "Authorization failed.", null);
+        }
+
+        if (!journeyService.checkNewJourneyValidation(journeyDTO)) {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "Input value is illegal.", null);
+        }
+
+        if (journeyService.checkUserJourneyExist(user, journeyDTO)) {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "User journey has been existed.", null);
         }
 
         Journey journeyToAdd = new Journey();
