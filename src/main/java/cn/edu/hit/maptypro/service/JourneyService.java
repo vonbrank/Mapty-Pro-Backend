@@ -2,7 +2,7 @@ package cn.edu.hit.maptypro.service;
 
 import cn.edu.hit.maptypro.dao.JourneyDAO;
 import cn.edu.hit.maptypro.entity.domain.Journey;
-import cn.edu.hit.maptypro.entity.dto.JourneyDTO;
+import cn.edu.hit.maptypro.entity.dto.journey.JourneyDTO;
 import cn.edu.hit.maptypro.entity.vo.JourneyVO;
 import cn.edu.hit.maptypro.entity.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
