@@ -77,10 +77,26 @@ public class UserController {
     @ResponseBody
     public Response resetPassword(@RequestHeader Map<String, String> headers, @RequestBody ResetPasswordDTO resetPasswordDTO) {
 
-        // TODO:
-        //  reset password feature
+        String username = headers.get("username");
+        String password = headers.get("password");
+        User user = userService.getByName(username, password);
 
-        return ResponseFactory.buildResult(ResponseCode.INTERNAL_SERVER_ERROR, "Not Implemented.", null);
+        if (user == null) {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "Authorization failed.", null);
+        }
+
+        if (!user.getPassword().equals(resetPasswordDTO.getOldPassword())) {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "Old password does not equal to the current one.", null);
+        }
+
+        if (!(resetPasswordDTO.getNewPassword() != null && !resetPasswordDTO.getNewPassword().isEmpty())) {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "New password required.", null);
+        }
+
+        user.setPassword(resetPasswordDTO.getNewPassword());
+        userService.add(user);
+
+        return ResponseFactory.buildResult(ResponseCode.SUCCESS, "Reset password successfully.", user);
 
     }
 
