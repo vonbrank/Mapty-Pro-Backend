@@ -63,11 +63,7 @@ public class JourneyService {
                 index = random.nextInt(bound);
             }
             selectedJourneyID.add(index);
-
-//            System.out.print(index);
-//            System.out.print(" ");
         }
-        System.out.println();
 
         List<Journey> selectedJourneys = new ArrayList<>();
 
