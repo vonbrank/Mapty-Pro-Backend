@@ -10,4 +10,6 @@ public interface JourneyDAO extends JpaRepository<Journey, Integer> {
     List<Journey> findAllByUser(User user);
 
     List<Journey> findAllByUserAndTitle(User user, String title);
+
+    List<Journey> findAll();
 }

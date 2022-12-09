@@ -51,9 +51,14 @@ public class JourneyController {
     @ResponseBody
     public Response getJourneyBySeed(@RequestParam Integer seed, @RequestParam Integer count) {
 
-        System.out.printf("seed = %d, count = %d%n", seed, count);
+        if (seed == null || count == null) {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "Failed to get journeys due to parameter error, " +
+                    "please contact the developer", null);
+        }
 
-        return ResponseFactory.buildResult(ResponseCode.INTERNAL_SERVER_ERROR, "Not Implemented.", null);
+        List<JourneyVO> journeyWithWaypoints = journeyService.getAllJourneyWithWaypointByUserBySeed(seed, count);
+
+        return ResponseFactory.buildResult(ResponseCode.SUCCESS, "OK", journeyWithWaypoints);
     }
 
     @PostMapping(value = "api/journey/create")
