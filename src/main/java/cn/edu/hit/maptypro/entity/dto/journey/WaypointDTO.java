@@ -1,4 +1,4 @@
-package cn.edu.hit.maptypro.entity.dto;
+package cn.edu.hit.maptypro.entity.dto.journey;
 
 import lombok.Data;
 

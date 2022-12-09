@@ -2,7 +2,7 @@ package cn.edu.hit.maptypro.controller;
 
 import cn.edu.hit.maptypro.entity.domain.Journey;
 import cn.edu.hit.maptypro.entity.domain.Waypoint;
-import cn.edu.hit.maptypro.entity.dto.JourneyDTO;
+import cn.edu.hit.maptypro.entity.dto.journey.JourneyDTO;
 import cn.edu.hit.maptypro.entity.vo.JourneyVO;
 import cn.edu.hit.maptypro.entity.domain.User;
 import cn.edu.hit.maptypro.response.Response;
@@ -43,6 +43,20 @@ public class JourneyController {
         }
 
         List<JourneyVO> journeyWithWaypoints = journeyService.getAllJourneyWithWaypointByUser(user);
+
+        return ResponseFactory.buildResult(ResponseCode.SUCCESS, "OK", journeyWithWaypoints);
+    }
+
+    @GetMapping(value = "api/journey/getBySeed")
+    @ResponseBody
+    public Response getJourneyBySeed(@RequestParam Integer seed, @RequestParam Integer count) {
+
+        if (seed == null || count == null) {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "Failed to get journeys due to parameter error, " +
+                    "please contact the developer", null);
+        }
+
+        List<JourneyVO> journeyWithWaypoints = journeyService.getAllJourneyWithWaypointByUserBySeed(seed, count);
 
         return ResponseFactory.buildResult(ResponseCode.SUCCESS, "OK", journeyWithWaypoints);
     }
