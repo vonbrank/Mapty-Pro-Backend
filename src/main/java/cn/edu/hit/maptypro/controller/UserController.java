@@ -65,10 +65,24 @@ public class UserController {
     @ResponseBody
     public Response updateUserProfile(@RequestHeader Map<String, String> headers, @RequestBody UpdateUserProfileDTO updateUserProfileDTO) {
 
-        // TODO:
-        //  update user profile feature
+        String username = headers.get("username");
+        String password = headers.get("password");
+        User user = userService.getByName(username, password);
 
-        return ResponseFactory.buildResult(ResponseCode.INTERNAL_SERVER_ERROR, "Not Implemented.", null);
+        if (user == null) {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "Authorization failed.", null);
+        }
+
+        if (!UpdateUserProfileDTO.checkValidation(updateUserProfileDTO)) {
+            return ResponseFactory.buildResult(ResponseCode.FAIL, "Input required.", null);
+        }
+
+        user.setUsername(updateUserProfileDTO.getNewUsername());
+        user.setEmail(updateUserProfileDTO.getNewEmail());
+
+        userService.add(user);
+
+        return ResponseFactory.buildResult(ResponseCode.SUCCESS, "Update user profile successfully.", user);
 
     }
 
